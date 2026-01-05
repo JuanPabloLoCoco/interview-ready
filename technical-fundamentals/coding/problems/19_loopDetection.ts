@@ -23,5 +23,18 @@ export type Node<T> = {
 };
 
 export default function detectLoop<T>(
-  head: Node<T> | undefined,
-): Node<T> | null {}
+  head: Node<T> | undefined
+): Node<T> | null {
+  let refSet: Set<Node<T>> = new Set();
+
+  let pointer = head;
+
+  while (pointer) {
+    if (refSet.has(pointer)) {
+      return pointer;
+    }
+    refSet.add(pointer);
+    pointer = pointer.next;
+  }
+  return null;
+}

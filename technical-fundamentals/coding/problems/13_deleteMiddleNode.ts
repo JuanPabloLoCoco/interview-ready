@@ -19,5 +19,33 @@ export type Node<T> = {
 
 export default function deleteMiddleNode<T>(
   head: Node<T>,
-  position: number,
-): Node<T> | undefined {}
+  position: number
+): Node<T> | undefined {
+  // a -> b -> c
+  // a -> c
+
+  // a -> b -> c -> d -> e -> f
+  if (position === 0) {
+    return head;
+  }
+
+  let size = 0;
+  let pointer = head;
+
+  while (pointer) {
+    pointer = pointer.next!;
+    size++;
+  }
+  if (position >= size) {
+    return head;
+  }
+
+  pointer = head!;
+  while (position - 1 > 0) {
+    pointer = pointer.next!;
+    position--;
+  }
+
+  pointer.next = pointer.next?.next;
+  return head;
+}

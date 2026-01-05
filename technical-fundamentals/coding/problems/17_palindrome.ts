@@ -9,4 +9,19 @@ export type Node<T> = {
   next?: Node<T>;
 };
 
-export default function isPalindrome<T>(head: Node<T> | undefined): boolean {}
+export default function isPalindrome<T>(head: Node<T> | undefined): boolean {
+  let values = [];
+
+  let pointer = head;
+  while (pointer) {
+    values.push(pointer.value);
+    pointer = pointer.next;
+  }
+
+  for (let i = 0; i < values.length / 2; i++) {
+    if (values[i] !== values[values.length - 1 - i]) {
+      return false;
+    }
+  }
+  return true;
+}

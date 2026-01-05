@@ -11,5 +11,25 @@ export type Node<T> = {
 
 export default function kthToLast<T>(
   head: Node<T>,
-  k: number,
-): Node<T> | undefined {}
+  k: number
+): Node<T> | undefined {
+  if (k === 0) {
+    return undefined;
+  }
+  let size = 0;
+  let rPointer = head;
+  let lPointer = head;
+  while (size < k) {
+    if (!rPointer) {
+      return undefined;
+    }
+    size++;
+    rPointer = rPointer.next!;
+  }
+
+  while (rPointer) {
+    rPointer = rPointer.next!;
+    lPointer = lPointer.next!;
+  }
+  return lPointer;
+}

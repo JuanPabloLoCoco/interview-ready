@@ -21,5 +21,22 @@ export type Node<T> = {
 
 export default function partition<T>(
   head: Node<T> | undefined,
-  x: T,
-): Node<T> | undefined {}
+  x: T
+): Node<T> | undefined {
+  let lLL = new LinkedList<T>(undefined);
+  let gLL = new LinkedList<T>(undefined);
+
+  let pointer = head;
+
+  while (pointer) {
+    if (pointer.value < x) {
+      lLL.push(pointer.value);
+    } else {
+      gLL.push(pointer.value);
+    }
+    pointer = pointer.next;
+  }
+  lLL.merge(gLL);
+
+  return lLL.head!;
+}
