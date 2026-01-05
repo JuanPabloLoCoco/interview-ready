@@ -4,20 +4,47 @@
 // Push, pop, and min should all operate in O(1) time.
 //
 
+interface Node<T> {
+  value: T;
+  minValue: T;
+  next?: Node<T>;
+}
+
 export default class StackMin<T> {
-    constructor() {
+  head: Node<T> | undefined;
 
+  constructor() {
+    this.head = undefined;
+  }
+
+  push(value: T): void {
+    const newNode: Node<T> = {
+      value,
+      // @ts-ignore
+      minValue: this.head ? Math.min(this.head.minValue, value) : value,
+    };
+
+    if (this.head) {
+      newNode.next = this.head;
     }
 
-    push(value: T): void {
+    this.head = newNode;
+  }
 
+  pop(): T | undefined {
+    if (!this.head) {
+      return undefined;
     }
 
-    pop(): T | undefined {
+    const value = this.head.value;
+    this.head = this.head.next;
+    return value;
+  }
 
+  min(): T | undefined {
+    if (!this.head) {
+      return undefined;
     }
-
-    min(): T | undefined {
-
-    }
+    return this.head.minValue;
+  }
 }

@@ -105,6 +105,29 @@ export class LinkedList<T> {
   }
   //iterator(): LinkedListIterator {}
   length: number;
+  peek(): T | undefined {
+    if (!this.head) {
+      return undefined;
+    }
+
+    return this.head.value;
+  }
+
+  dequeue(): T | undefined {
+    if (!this.head) {
+      return undefined;
+    }
+
+    const val = this.head.value;
+
+    if (this.head === this.tail) {
+      this.head = undefined;
+      this.tail = undefined;
+    } else {
+      this.head = this.head.next;
+    }
+    return val;
+  }
 }
 
 const list = new LinkedList();
