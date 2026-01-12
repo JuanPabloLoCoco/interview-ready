@@ -13,6 +13,37 @@
 // Output: e, f, a, b, d, c
 // ```
 
-export default function buildOrder(projects: string[], dependencies: string[][]): string[] | string {
+export default function buildOrder(
+  projects: string[],
+  dependencies: string[][]
+): string[] | string {
+  let dependenciesDic: Record<string, string[]> = {};
+  let ans: Array<string> = [];
 
+  for (let dep of dependencies) {
+    const pr = dep[1];
+    if (!dependenciesDic[pr]) {
+      dependenciesDic[pr] = [];
+    }
+    dependenciesDic[pr].push(dep[0]);
+  }
+
+  let itemsToAdd = projects.filter((p) => !dependenciesDic[p]);
+  let addedItems: Set<string> = new Set();
+
+  while (ans.length < projects.length) {
+    if (itemsToAdd.length === 0) {
+      throw new Error("No valid build order exists");
+    }
+    itemsToAdd.forEach((p) => {
+      ans.push(p);
+      addedItems.add(p);
+    });
+    itemsToAdd = projects.filter(
+      (p) =>
+        !addedItems.has(p) &&
+        dependenciesDic[p].every((ip) => addedItems.has(ip))
+    );
+  }
+  return ans;
 }

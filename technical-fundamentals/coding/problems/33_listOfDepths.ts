@@ -16,5 +16,48 @@ export type ListNode<T> = {
 };
 
 export default function listOfDepths<T>(
-  root: TreeNode<T> | null,
-): ListNode<T>[] {}
+  root: TreeNode<T> | null
+): ListNode<T>[] {
+  if (!root) {
+    return [];
+  }
+  const ans: Array<ListNode<T>> = [];
+
+  let currList = [];
+  let nextList = [root];
+  while (nextList.length > 0) {
+    currList = nextList;
+    nextList = [];
+    let head: ListNode<T> | undefined = undefined;
+    let tail: ListNode<T> | undefined = undefined;
+
+    while (currList.length > 0) {
+      const val = currList.shift();
+      if (!val) {
+        throw new Error("Invalid node");
+      }
+
+      if (val.left) {
+        nextList.push(val.left);
+      }
+
+      if (val.right) {
+        nextList.push(val.right);
+      }
+
+      const newNode: ListNode<T> = {
+        value: val.value,
+      };
+
+      if (!head) {
+        head = newNode;
+        tail = newNode;
+      } else {
+        tail!.next = newNode;
+        tail = newNode;
+      }
+    }
+    ans.push(head!);
+  }
+  return ans;
+}
